@@ -6,11 +6,11 @@ To analyze café sales performance over a one-year period in order to identify r
 
 ## Dataset
 The dataset contains transactional sales records including:
--Item
--Revenue
--Transaction Date
--Quantity Sold
--Price per unit
+- Item
+- Revenue
+- Transaction Date
+- Quantity Sold
+- Price per unit
 
 ## Data Cleaning Process using SQL
 Key steps included:
