@@ -1,5 +1,5 @@
 # Cafe-Sales-Analysis
-End-to-end cafe sales analysis with SQL,Power BI and Dax
+End-to-end cafe sales analysis using SQL,Power BI and Dax
 
 ## Objective
 To analyze café sales performance over a one-year period in order to identify revenue trends, volatility patterns, and potential operational or market-driven causes behind fluctuations.
