@@ -24,34 +24,22 @@ RENAME COLUMN `Transaction Date` TO transaction_date;
 #check for duplicates with window function and subquery and again with CTE
 Select*
 FROM(
-Select transaction_id,ROW_NUMBER() over(PARTITION BY transaction_id,
-Item,
-Quantity,
-price_per_unit,
-total_spent,
-payment_method,
-Location,
-transaction_date) as Row_num
+Select transaction_id,ROW_NUMBER() over(PARTITION BY transaction_id) as Row_num
 FROM working_data
 )t
-where row_num=2;
+where row_num>1;
 
-With dupes as(
-Select transaction_id,ROW_NUMBER() over(PARTITION BY transaction_id,
-Item,
-Quantity,
-price_per_unit,
-total_spent,
-payment_method,
-Location,
-transaction_date) as Row_num
+
+#Check for duplicates 
+With duplicates as(
+Select transaction_id,ROW_NUMBER() over(PARTITION BY transaction_id) as Row_num
 FROM working_data
 )
 Select *
-FROM dupes
-WHERE row_num=2;
-#check data formats/validate data
+FROM duplicates
+WHERE row_num>1;
 
+#check data formats/validate data
 #handle null in item by deleting unusable rows & missing data in total sepnt is updated by caluculating price and qty
 # & unusable date
 SELECT* FROM working_data;
@@ -69,6 +57,7 @@ SELECT*
 FROM working_data
 WHERE total_spent is null or trim(total_spent) in('UNKNOWN', 'ERROR' , '');
 
+#fix missing and invalid entries in total spent
 UPDATE working_data
 set total_spent= quantity*price_per_unit
 where total_spent is null or trim(total_spent) in('UNKNOWN', 'ERROR' , '');
@@ -88,6 +77,7 @@ WHERE  transaction_date is null or trim(transaction_date) in('UNKNOWN', 'ERROR' 
 
 DESCRIBE working_data;
 
+#format data type to DATE
 ALTER TABLE working_data
 MODIFY COLUMN transaction_date DATE;
 
